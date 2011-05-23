@@ -39,9 +39,9 @@
  }
 
 \XMLelement{span}{%
-\XMLattribute{class}{\class}{\relax}
-\XMLattribute{id}{\id}{\relax}
-\XMLattribute{title}{\attribs}{\relax}
+\XMLattribute{class}{\class}{\relax}%
+\XMLattribute{id}{\id}{\relax}%
+\XMLattribute{title}{\attribs}{\relax}%
 }
 {\ClassStartActions\class}
 {\ClassEndActions\class}
