@@ -1,112 +1,25 @@
-%Definice uživatelských funkcí
-\long\gdef\DeclareClassActions#1#2#3{
-%#1 jméno třídy, #2 akce při otevíracím tagu, #3 akce u zavíracího tagu
-\catcode`\_=12
-  \csgdef{clsst@#1}{#2}
-  \csgdef{clsend@#1}{#3}
-\catcode`\_=8
-}
-\gdef\ClassStartActions#1{%
-  \let\hocr@classaction=\hocr@classstart
-  \catcode`\_=12
-  \expandafter\hocr@classproc\expandafter{#1}
-  \catcode`\_=13
-}
-\gdef\ClassEndActions#1{%
-  \let\hocr@classaction=\hocr@classend
-  \expandafter\hocr@classproc\expandafter{#1}
-}
-%Definice pomocných funkcí
-\gdef\hocr@classaction#1{}
-\gdef\hocr@classstart#1{%
-%\ifcsname clsst@\string#1\endcsname Joo \else Nee\fi
-\let\oldunderscore=\textunderscore
-\def\textunderscore{_}
-\ifcsdef{clsst@#1}{\csuse{clsst@#1}}{}
-\let\textunderscore=\oldunderscore
-%\@ifundefined{clsst@#1}{}{}
-}
-\gdef\hocr@classend#1{%
-%\ifcsdef{classend@##1}{\csuse{classend@##1}}{}
-\catcode`\_=12
-\let\oldunderscore=\textunderscore
-\def\textunderscore{_}
-%\fbox{#1}
-\ifcsdef{clsend@#1}{\csuse{clsend@#1}}{}
-\let\textunderscore=\oldunderscore
-\catcode`\_=13
-}
-\gdef\hocr@classproc#1{%
-%class:#1\\  
-\hocr@classelement#1 \@empty
-}
-\gdef\hocr@classelement#1 #2{%
-   \hocr@classaction{#1}% fbox here to have a visual test
-   \ifx #2\@empty\else
-    \expandafter\hocr@classelement
-   \fi
-   #2%
-}
-
+\long\gdef\DeclareElement#1#2#3#4{%
+\XMLelement{#1}{%
+\XMLattribute{class}{\class}{\relax}%
+\XMLattribute{id}{\id}{\relax}%
+\XMLattribute{title}{\attribs}{\relax}%
+#2}{\ClassStartActions\class%
+#3}{#4%
+\ClassEndActions\class%
+}}
 %Definice elementů
 \XMLelement{html}{}{%
+  
   \documentclass{article}
   \usepackage[UTF8]{inputenc}
+  \usepackage{hocr}
+  \usepackage{hocr-vars}
   \usepackage{lmodern}
-  \usepackage{etoolbox}
-  \usepackage{comment}
-  \newcount\pokus
-  \DeclareClassActions{ocr_page}{\global\pokus=0}{\newpage}
-  \DeclareClassActions{ocr_carea}{}{\hrule}
-  \DeclareClassActions{ocr_line}{\global\advance\pokus by 1\relax \the\pokus:}{\vrule}
-  \DeclareClassActions{noo}{}{}  
-  \DeclareClassActions{b_oo}{}{} 
-  \DeclareClassActions{ocr_par}{}{\par}
-  %\csgdef{clsst@ocr_par}{nazdar}
   \begin{document}
-  
 }{\end{document}}
 
-\XMLelement{p}{%
-\XMLattribute{class}{\class}{\relax}
-\XMLattribute{id}{\id}{\relax}
-\XMLattribute{title}{\attribs}{\relax}
-}{
-\ClassStartActions\class
-%\expandafter\ClassStartActions\expandafter{\p}
-}{
-\ClassEndActions\class
-}
 
-\XMLelement{div}{%
-\XMLattribute{class}{\class}{\relax}
-\XMLattribute{id}{\id}{\relax}
-\XMLattribute{title}{\attribs}{\relax}
-}{%
-\xdef\divclasselements{\class}
-%\hrule
-\ClassStartActions\class
-}{%
-\ClassEndActions\class
- }
+\DeclareElement{p}{}{}{\par}
+\DeclareElement{div}{}{}{}
+\DeclareElement{span}{}{}{}
 
-\XMLelement{span}{%
-\XMLattribute{class}{\class}{\relax}
-\XMLattribute{id}{\id}{\relax}
-\XMLattribute{title}{\attribs}{\relax}
-}{%
-\ClassStartActions\class
-\catcode`\1=11
-\catcode`\2=11
-\catcode`\3=11
-\catcode`\4=11
-\catcode`\5=11
-\catcode`\6=11
-\catcode`\7=11
-\catcode`\8=11
-\catcode`\9=11
-\catcode`\0=11
-
-}{%
-\ClassEndActions\class
- }

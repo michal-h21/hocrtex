@@ -1,0 +1,42 @@
+\ProvidesPackage{hocr}
+\RequirePackage{etoolbox}
+%User functions
+\long\gdef\DeclareClassActions#1#2#3{%
+%#1 jméno třídy, #2 akce při otevíracím tagu, #3 akce u zavíracího tagu
+\csgdef{clsst@#1}{#2}
+ \csgdef{clsend@#1}{#3}
+}
+\gdef\ClassStartActions#1{%
+\let\hocr@classaction=\hocr@classstart%
+\expandafter\hocr@classproc\expandafter{#1}%
+}
+\gdef\ClassEndActions#1{%
+\let\hocr@classaction=\hocr@classend%
+\expandafter\hocr@classproc\expandafter{#1}%
+}
+%Definice pomocných funkcí
+\gdef\hocr@classaction#1{}
+\gdef\hocr@classstart#1{%
+\let\oldunderscore=\textunderscore%
+\def\textunderscore{_}%
+\ifcsdef{clsst@#1}{\csuse{clsst@#1}}{}%
+\let\textunderscore=\oldunderscore%
+}
+\gdef\hocr@classend#1{%
+\let\oldunderscore=\textunderscore%
+\def\textunderscore{_}%
+\ifcsdef{clsend@#1}{\csuse{clsend@#1}}{}%
+\let\textunderscore=\oldunderscore%
+}
+\gdef\hocr@classproc#1{% 
+\hocr@classelement#1 \@empty%
+}
+\gdef\hocr@classelement#1 #2{%
+\hocr@classaction{#1}% fbox here to have a visual test
+\ifx #2\@empty\else%
+\expandafter\hocr@classelement%
+\fi%
+#2%
+}
+
+\endinput
