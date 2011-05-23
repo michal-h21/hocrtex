@@ -1,60 +1,10 @@
-%Definice uživatelských funkcí
-\long\gdef\DeclareClassActions#1#2#3{
-%#1 jméno třídy, #2 akce při otevíracím tagu, #3 akce u zavíracího tagu
-\catcode`\_=12
-  \csgdef{clsst@#1}{#2}
-  \csgdef{clsend@#1}{#3}
-\catcode`\_=8
-}
-\gdef\ClassStartActions#1{%
-  \let\hocr@classaction=\hocr@classstart
-  \catcode`\_=12
-  \expandafter\hocr@classproc\expandafter{#1}
-  \catcode`\_=13
-}
-\gdef\ClassEndActions#1{%
-  \let\hocr@classaction=\hocr@classend
-  \expandafter\hocr@classproc\expandafter{#1}
-}
-%Definice pomocných funkcí
-\gdef\hocr@classaction#1{}
-\gdef\hocr@classstart#1{%
-%\ifcsname clsst@\string#1\endcsname Joo \else Nee\fi
-\let\oldunderscore=\textunderscore
-\def\textunderscore{_}
-\ifcsdef{clsst@#1}{\csuse{clsst@#1}}{}
-\let\textunderscore=\oldunderscore
-%\@ifundefined{clsst@#1}{}{}
-}
-\gdef\hocr@classend#1{%
-%\ifcsdef{classend@##1}{\csuse{classend@##1}}{}
-\catcode`\_=12
-\let\oldunderscore=\textunderscore
-\def\textunderscore{_}
-%\fbox{#1}
-\ifcsdef{clsend@#1}{\csuse{clsend@#1}}{}
-\let\textunderscore=\oldunderscore
-\catcode`\_=13
-}
-\gdef\hocr@classproc#1{%
-%class:#1\\  
-\hocr@classelement#1 \@empty
-}
-\gdef\hocr@classelement#1 #2{%
-   \hocr@classaction{#1}% fbox here to have a visual test
-   \ifx #2\@empty\else
-    \expandafter\hocr@classelement
-   \fi
-   #2%
-}
-
 %Definice elementů
 \XMLelement{html}{}{%
   \documentclass{article}
   \usepackage[UTF8]{inputenc}
   \usepackage{lmodern}
   \usepackage{etoolbox}
-  \usepackage{comment}
+  \usepackage{hocr}
   \newcount\pokus
   \DeclareClassActions{ocr_page}{\global\pokus=0}{\newpage}
   \DeclareClassActions{ocr_carea}{}{\hrule}
@@ -106,7 +56,6 @@
 \catcode`\8=11
 \catcode`\9=11
 \catcode`\0=11
-
 }{%
 \ClassEndActions\class
  }
