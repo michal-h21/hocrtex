@@ -24,36 +24,8 @@
   
 }{\end{document}}
 
-% \XMLelement{p}{%
-% \XMLattribute{class}{\class}{\relax}
-% \XMLattribute{id}{\id}{\relax}
-% \XMLattribute{title}{\attribs}{\relax}
-% }{
-% \ClassStartActions\class
-% %\expandafter\ClassStartActions\expandafter{\p}
-% }{
-% \ClassEndActions\class
-% }
 
-% \XMLelement{div}{%
-% \XMLattribute{class}{\class}{\relax}
-% \XMLattribute{id}{\id}{\relax}
-% \XMLattribute{title}{\attribs}{\relax}
-% }{%
-% \xdef\divclasselements{\class}
-% %\hrule
-% \ClassStartActions\class
-% }{%
-% \ClassEndActions\class
-%  }
 \DeclareElement{p}{}{}{\par}
 \DeclareElement{div}{}{}{}
 \DeclareElement{span}{}{}{}
-% \XMLelement{span}{%
-% \XMLattribute{class}{\class}{\relax}%
-% \XMLattribute{id}{\id}{\relax}%
-% \XMLattribute{title}{\attribs}{\relax}%
-% }
-% {\ClassStartActions\class}
-% {\ClassEndActions\class}
 
