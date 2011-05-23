@@ -9,8 +9,6 @@
   \DeclareClassActions{ocr_page}{\global\pokus=0}{\newpage}
   \DeclareClassActions{ocr_carea}{}{\hrule}
   \DeclareClassActions{ocr_line}{\global\advance\pokus by 1\relax \the\pokus:}{\vrule}
-  \DeclareClassActions{noo}{}{}  
-  \DeclareClassActions{b_oo}{}{} 
   \DeclareClassActions{ocr_par}{}{\par}
   %\csgdef{clsst@ocr_par}{nazdar}
   \begin{document}
@@ -44,18 +42,6 @@
 \XMLattribute{class}{\class}{\relax}
 \XMLattribute{id}{\id}{\relax}
 \XMLattribute{title}{\attribs}{\relax}
-}{%
-\ClassStartActions\class
-\catcode`\1=11
-\catcode`\2=11
-\catcode`\3=11
-\catcode`\4=11
-\catcode`\5=11
-\catcode`\6=11
-\catcode`\7=11
-\catcode`\8=11
-\catcode`\9=11
-\catcode`\0=11
-}{%
-\ClassEndActions\class
- }
+}
+{\ClassStartActions\class}
+{\ClassEndActions\class}
