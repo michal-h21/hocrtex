@@ -1,0 +1,27 @@
+\frenchspacing
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{xparse}
+\newdimen\pokus
+\newcount\ocrpage
+\ocrpage=1
+\gdef\GetDimens#1{\get@dimens#1 {} {} {} {}}
+\gdef\get@dimens#1 #2 #3 #4{%
+%(#1pt,#2pt)
+\get@@dimens#1 {} {} {} {}
+}
+\gdef\get@@dimens#1 #2 #3 #4{%
+(#1pt,#2pt)
+}
+
+\DeclareClassActions{ocr_page}{\global\pokus=0ex\relax\marginpar{\the\ocrpage}}{\newpage\global\advance\ocrpage by 1\relax}
+\DeclareClassActions{ocr_carea}{}{}
+\DeclareClassActions{ocr_line}{%
+  \global\advance\pokus by 13pt\relax%
+  \ParseAttributes
+  \edef\nn{\textposbbox}
+  \begin{textblock*}{70em}(\textposbbox, \textposbboy)%(1cm,\pokus)%
+  %\GetDimens{{\UseAttribute{bbox}}}%
+}%
+{\end{textblock*}\vrule}
+\DeclareClassActions{ocr_par}{}{}
+

@@ -3,6 +3,15 @@
 \RequirePackage[UTF8]{inputenc}
 \RequirePackage{tgschola}
 %User functions
+%\DeclareListParser{\hocrattrparse}{;}
+\gdef\ParseAttributes{%
+  %\renewcommand*\do[1]{#1::}%\hocr@attrs#1}
+\expandafter\hocr@attrs\attribs;\@empty
+}
+\gdef\UseAttribute#1{%
+  \ifcsdef{attrdrv@#1}{\csuse{attrdrv@#1}}{Neni}%
+}
+
 \long\gdef\DeclareClassActions#1#2#3{%
 %#1 jméno třídy, #2 akce při otevíracím tagu, #3 akce u zavíracího tagu
 \csgdef{clsst@#1}{#2}
@@ -40,5 +49,20 @@
 \fi%
 #2%
 }
+\gdef\hocr@attrs#1 #2;#3{%
+  \hocr@defattr{#1}{#2}%
+  \ifx #3\@empty\else%
+  \expandafter\hocr@attrs%
+  \fi
+  #3%
+}
+\gdef\hocr@defattr#1#2{%
+\setbox0=\hbox{\if #1{bbox} \hocr@blbox#2\@empty\fi}
+\csgdef{attrdrv@#1}{#2}%
+}
 
+\gdef\hocr@blbox#1 #2 #3\@empty{%
+\gdef\textposbbox{\the\numexpr #1/5\relax pt}
+\gdef\textposbboy{\the\numexpr #2/5\relax pt}
+}
 \endinput
