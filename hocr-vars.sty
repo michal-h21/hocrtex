@@ -1,9 +1,11 @@
 \frenchspacing
 \RequirePackage[quiet,absolute,overlay]{textpos}
 \RequirePackage{xparse}
-\usepackage[T1]{fontenc}
+\RequirePackage[UTF8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{tgschola}
 
-\usepackage{cmap}
+\RequirePackage{cmap}
 
 \RequirePackage{calc}
 \usepackage{graphicx}
@@ -32,6 +34,6 @@
 \DeclareClassActions{ocr_word}{%
 \ParseAttributes%
 \begin{textblock*}{70em}(\textposbbox pt/\real{\hocr@resizeratio},\textposbboy pt/\real{\hocr@resizeratio})%
-}{\end{textblock*}}
+}{ \end{textblock*}}
 \DeclareClassActions{ocr_par}{}{\par}
 
