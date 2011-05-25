@@ -1,0 +1,20 @@
+\ProvidesPackage{hocr-config}
+\RequirePackage{kvoptions}
+%Package options
+
+%Write configuration to cfg file
+\newwrite\out
+\long\gdef\saveconfig#1{%
+\def\wr##1{\immediate\write\out{\noexpand##1}}
+\immediate\openout\out=#1.cfg
+%\wr{\NAMESPACE{http://www.w3.org/2000/svg}{hocr.xmt}}
+%\wr{\SYSTEM{http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd} {svg.xmt}}
+% Only NAME seems to work correctly
+\wr{\NAME{html}{svg.xmt}}
+\wr{\UnicodeCharacter{45}{-}}
+\wr{\UnicodeCharacter{xFB01}{fi}}
+\wr{\UnicodeCharacter{x201e}{,,}}
+\wr{\UnicodeCharacter{35}{_}}
+\immediate\closeout\out
+%\immediate\write18{xmltex #1.svg}
+}
