@@ -1,6 +1,7 @@
 \ProvidesPackage{hocr}
 \RequirePackage{etoolbox}
 \RequirePackage[UTF8]{inputenc}
+%\RequirePackage{fltpoint}
 \RequirePackage{tgschola}
 %User functions
 %\DeclareListParser{\hocrattrparse}{;}
@@ -62,7 +63,12 @@
 }
 
 \gdef\hocr@blbox#1 #2 #3\@empty{%
-\gdef\textposbbox{\the\numexpr #1/5\relax pt}
-\gdef\textposbboy{\the\numexpr #2/5\relax pt}
+%\fpAccuracy{0}
+%\fpDiv{\textposbbox}{#1}{\hocr@resizeratio}
+%\fpDiv{\textposbboy}{#2}{\hocr@resizeratio}
+\gdef\textposbbox{#1}
+\gdef\textposbboy{#2}
+%\gdef\textposbbox{\the\numexpr #1/\hocr@resizeratio\relax}
+%\gdef\textposbboy{\the\numexpr #2/\hocr@resizeratio\relax}
 }
 \endinput

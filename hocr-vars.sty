@@ -1,27 +1,37 @@
 \frenchspacing
-\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage[quiet,absolute,overlay]{textpos}
 \RequirePackage{xparse}
+\usepackage[T1]{fontenc}
+
+\usepackage{cmap}
+
+\RequirePackage{calc}
+\usepackage{graphicx}
+
 \newdimen\pokus
 \newcount\ocrpage
 \ocrpage=1
-\gdef\GetDimens#1{\get@dimens#1 {} {} {} {}}
-\gdef\get@dimens#1 #2 #3 #4{%
-%(#1pt,#2pt)
-\get@@dimens#1 {} {} {} {}
-}
-\gdef\get@@dimens#1 #2 #3 #4{%
-(#1pt,#2pt)
-}
 
-\DeclareClassActions{ocr_page}{\global\pokus=0ex\relax\marginpar{\the\ocrpage}}{\newpage\global\advance\ocrpage by 1\relax}
+\DeclareClassActions{footnotes}{\footnotesize}{}
+\DeclareClassActions{ocr_page}{%
+  \global\pokus=0ex\relax%
+}{%
+\begin{textblock*}{\the\paperwidth}(0pt,0pt)
+  \includegraphics{norm-\the\numexpr\ocrpage-1\relax.png}
+\end{textblock*}%
+\null\newpage%
+\global\advance\ocrpage by 1\relax}
 \DeclareClassActions{ocr_carea}{}{}
 \DeclareClassActions{ocr_line}{%
-  \global\advance\pokus by 13pt\relax%
-  \ParseAttributes
-  \edef\nn{\textposbbox}
-  \begin{textblock*}{70em}(\textposbbox, \textposbboy)%(1cm,\pokus)%
+%  \global\advance\pokus by 13pt\relax%
+ % \ParseAttributes%
+%\begin{textblock*}{70em}(\textposbbox pt/\real{\hocr@resizeratio},\textposbboy pt/\real{\hocr@resizeratio})% 
   %\GetDimens{{\UseAttribute{bbox}}}%
-}%
-{\end{textblock*}\vrule}
-\DeclareClassActions{ocr_par}{}{}
+}{}%
+%{\end{textblock*}}
+\DeclareClassActions{ocr_word}{%
+\ParseAttributes%
+\begin{textblock*}{70em}(\textposbbox pt/\real{\hocr@resizeratio},\textposbboy pt/\real{\hocr@resizeratio})%
+}{\end{textblock*}}
+\DeclareClassActions{ocr_par}{}{\par}
 

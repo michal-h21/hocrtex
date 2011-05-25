@@ -1,5 +1,3 @@
-
-
 \long\gdef\DeclareElement#1#2#3#4{%
 \XMLelement{#1}{%
 \XMLattribute{class}{\class}{\relax}%
@@ -27,7 +25,7 @@
 }{\end{document}}
 
 
-\DeclareElement{p}{}{}{\par}
+\DeclareElement{p}{}{}{}
 \DeclareElement{div}{}{}{}
 \DeclareElement{span}{}{}{}
 
