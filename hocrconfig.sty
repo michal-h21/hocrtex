@@ -1,7 +1,13 @@
-\ProvidesPackage{hocr-config}
+\ProvidesPackage{hocrconfig}
 \RequirePackage{kvoptions}
 %Package options
 
+\DeclareStringOption[article]{DocClass}
+\DeclareStringOption[12pt,a4page]{DocAttr}
+\DeclareStringOption[1]{ResizeRatio}
+\DeclareStringOption[--]{ImageName}
+\DeclareStringOption{FileName}
+\ProcessKeyvalOptions*
 %Write configuration to cfg file
 \newwrite\out
 \long\gdef\saveconfig#1{%
@@ -10,11 +16,16 @@
 %\wr{\NAMESPACE{http://www.w3.org/2000/svg}{hocr.xmt}}
 %\wr{\SYSTEM{http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd} {svg.xmt}}
 % Only NAME seems to work correctly
-\wr{\NAME{html}{svg.xmt}}
+\wr{\NAME{html}{hocr.xmt}}
 \wr{\UnicodeCharacter{45}{-}}
 \wr{\UnicodeCharacter{xFB01}{fi}}
 \wr{\UnicodeCharacter{x201e}{,,}}
 \wr{\UnicodeCharacter{35}{_}}
+\wr{\gdef\noexpand\hocr@docclass{\hocrconfig@DocClass}}
+\wr{\gdef\noexpand\hocr@docclassattribs{\hocrconfig@DocAttr}}
+\wr{\gdef\noexpand\hocr@resizeratio{\hocrconfig@ResizeRatio}}
 \immediate\closeout\out
 %\immediate\write18{xmltex #1.svg}
 }
+
+\saveconfig{\hocrconfig@FileName .cfg}
