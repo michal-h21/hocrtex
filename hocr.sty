@@ -1,23 +1,32 @@
 \ProvidesPackage{hocr}
 \RequirePackage{etoolbox}
-\RequirePackage[UTF8]{inputenc}
-%\RequirePackage{fltpoint}
-\RequirePackage{tgschola}
+
 %User functions
-%\DeclareListParser{\hocrattrparse}{;}
+
 \gdef\ParseAttributes{%
-  %\renewcommand*\do[1]{#1::}%\hocr@attrs#1}
+% Parse title attribute. Attributes are separated with semicolon, 
+% for each it creates new macro with its name. 
+% Contents are accesible with \UseAttribute macro 
 \expandafter\hocr@attrs\attribs;\@empty
 }
 \gdef\UseAttribute#1{%
-  \ifcsdef{attrdrv@#1}{\csuse{attrdrv@#1}}{Neni}%
+% #1 name of the attribute
+% for example bbox, image, lpageno
+% but there is problem if I want to process value with another macro,
+%
+  \ifcsdef{attrdrv@#1}{\csuse{attrdrv@#1}}{}%
 }
 
 \long\gdef\DeclareClassActions#1#2#3{%
-%#1 jméno třídy, #2 akce při otevíracím tagu, #3 akce u zavíracího tagu
+% Actions are caled for each class in an element, if it exists.
+% #1 is name of a class, #2 is action on opening tag, #3 is action on closing tag
 \csgdef{clsst@#1}{#2}
  \csgdef{clsend@#1}{#3}
 }
+
+%internal macros
+
+%macros for actions on class names
 \gdef\ClassStartActions#1{%
 \let\hocr@classaction=\hocr@classstart%
 \expandafter\hocr@classproc\expandafter{#1}%
@@ -29,6 +38,7 @@
 %Definice pomocných funkcí
 \gdef\hocr@classaction#1{}
 \gdef\hocr@classstart#1{%
+% this is because underscores in class names caused problems
 \let\oldunderscore=\textunderscore%
 \def\textunderscore{_}%
 \ifcsdef{clsst@#1}{\csuse{clsst@#1}}{}%
@@ -40,7 +50,9 @@
 \ifcsdef{clsend@#1}{\csuse{clsend@#1}}{}%
 \let\textunderscore=\oldunderscore%
 }
+
 \gdef\hocr@classproc#1{% 
+% process class attribute
 \hocr@classelement#1 \@empty%
 }
 \gdef\hocr@classelement#1 #2{%
@@ -57,18 +69,18 @@
   \fi
   #3%
 }
+
 \gdef\hocr@defattr#1#2{%
-\setbox0=\hbox{\if #1{bbox} \hocr@blbox#2\@empty\fi}
+%this is dirty hack, but I cannot extract bbox info \UseAttribute 
+\setbox0=\hbox{\if #1{bbox} \hocr@blbox#2 {} {} {}\@empty\fi}
 \csgdef{attrdrv@#1}{#2}%
 }
 
+
 \gdef\hocr@blbox#1 #2 #3\@empty{%
-%\fpAccuracy{0}
-%\fpDiv{\textposbbox}{#1}{\hocr@resizeratio}
-%\fpDiv{\textposbboy}{#2}{\hocr@resizeratio}
+%put top x and left y bbox dimensions of an element into macros
 \gdef\textposbbox{#1}
 \gdef\textposbboy{#2}
-%\gdef\textposbbox{\the\numexpr #1/\hocr@resizeratio\relax}
-%\gdef\textposbboy{\the\numexpr #2/\hocr@resizeratio\relax}
+
 }
 \endinput
