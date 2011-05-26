@@ -20,11 +20,11 @@ In tesseract, you can generate hocr output with this procedure:
 
 1.  Create file named "hocr", put it somewhere and copy this line into it:
     
-    `tessedit_create_hocr 1`
+    tessedit_create_hocr 1
     
 2.  call tesseract
     
-    `tesseract imagename outputname -l lang_name +path_to_hocr/hocr`
+    tesseract imagename outputname -l lang_name +path_to_hocr/hocr
 
 Now we have html file with hocr information.    
 
