@@ -5,6 +5,13 @@ Hocr is html microformat for information from OCR packages. You can find more in
 
 Hocrtex is based on xmltex, xml processor written in TeX.
 
+Install
+-------
+
+Unzip contents of the file hocr.tar.gz to your local texmf dir. You can find its location with the following command:
+
+    kpsewhich -var-value TEXMFHOME
+
 Usage
 -----
 First, you need to get hocr file. You have to process images from your scanned book with one of OCR packages listed above.
@@ -27,11 +34,21 @@ Create file sample.tex:
 
     \documentclass{article}
     \usepackage[
-       FileName=normal % name of hocr file without .html suffix
-      ,ResizeRatio=5.5 % division from bbox coordinates to points
-      ,ImageName=normal-
+       FileName=example   % name of hocr file without .html suffix
+      ,ResizeRatio=5.5    % division from bbox coordinates to points
+      ,ImageName=normal- % in hocr, each page includes name of its 
+                          % source image. but if source image is multipage tiff,      
+                          % this name is on all pages the same. it is best to 
+                          % convert this tiff image into series of png images
+                          % named normal-0.png, ..., normal-n.png
+                          % ImageName is the prefix before image number 
+      ,Driver=underimage  % driver defines actions on hocr classes 
     ]{hocrconfig}
     \begin{document}
     \end{document}
    
-process  
+after compilation with LaTeX, file `normal.cfg` is created. Now you can call xmltex:
+
+    pdfxmltex normal.html    
+
+file normal.pdf will be created.
