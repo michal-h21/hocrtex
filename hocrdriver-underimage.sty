@@ -19,7 +19,11 @@
   \global\pokus=0ex\relax%
 }{%
 \begin{textblock*}{\the\paperwidth}(0pt,0pt)
+\ifx\hocr@imagename{--}
   \includegraphics{\jobname-\the\numexpr\ocrpage-1\relax.png}
+\else 
+  \includegraphics{\hocr@imagename\the\numexpr\ocrpage-1\relax.png}
+\fi
 \end{textblock*}%
 \null\newpage%
 \global\advance\ocrpage by 1\relax}

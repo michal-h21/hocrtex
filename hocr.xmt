@@ -20,7 +20,7 @@
     \fi
   \fi
   \usepackage{hocr}
-  \usepackage{hocr-vars}
+  \usepackage{\hocr@driver}
   \begin{document}
 }{\end{document}}
 
