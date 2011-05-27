@@ -1,9 +1,9 @@
 \frenchspacing
-\RequirePackage[quiet,absolute,overlay]{textpos}
+\RequirePackage[quiet,absolute]{textpos}
 \RequirePackage{xparse}
 \RequirePackage[UTF8]{inputenc}
 \RequirePackage[T1]{fontenc}
-\RequirePackage{tgschola}
+\RequirePackage{tgtermes}
 
 \RequirePackage{cmap}
 
@@ -17,13 +17,26 @@
 \DeclareClassActions{footnotes}{\footnotesize}{}
 \DeclareClassActions{ocr_page}{%
   \global\pokus=0ex\relax%
+  \begin{textblock*}{\the\paperwidth}(0pt,0pt)
+  \ParseAttributes
+%\ifx\hocr@imagename{--}
+  %:\UseAttribute{image}:
+  %\includegraphics[page=\the\ocrpage]{\UseAttribute{image}}
+  %\includegraphics{\jobname-\the\numexpr\ocrpage-1\relax.png}
+% \else 
+%   \includegraphics{\hocr@imagename\the\numexpr\ocrpage-1\relax.png}
+% \fi
+\end{textblock*}%
 }{%
 \begin{textblock*}{\the\paperwidth}(0pt,0pt)
-\ifx\hocr@imagename{--}
+\if\hocr@imagename{--}
+  %\expandafter\hocr@removequotes\expandafter\UseAttribute\expandafter{image}
+  %\includegraphics[page=\the\ocrpage]{Kapital-kapitola3.pdf}
+  %\includegraphics[page=\the\ocrpage]{\UseAttribute{image}}
   \includegraphics{\jobname-\the\numexpr\ocrpage-1\relax.png}
 \else 
   \includegraphics{\hocr@imagename\the\numexpr\ocrpage-1\relax.png}
-\fi
+ \fi
 \end{textblock*}%
 \null\newpage%
 \global\advance\ocrpage by 1\relax}

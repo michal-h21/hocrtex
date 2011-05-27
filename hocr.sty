@@ -14,7 +14,7 @@
 % for example bbox, image, lpageno
 % but there is problem if I want to process value with another macro,
 %
-  \ifcsdef{attrdrv@#1}{\csuse{attrdrv@#1}}{}%
+  \ifcsdef{attrdrv@#1}{\csuse{attrdrv@#1}}{neni}%
 }
 
 \long\gdef\DeclareClassActions#1#2#3{%
@@ -73,10 +73,12 @@
 \gdef\hocr@defattr#1#2{%
 %this is dirty hack, but I cannot extract bbox info \UseAttribute 
 \setbox0=\hbox{\if #1{bbox} \hocr@blbox#2 {} {} {}\@empty\fi}
-\csgdef{attrdrv@#1}{#2}%
+\edef\@att{#2}
+%\@ifnextchar{"}{\@att}{\edef\@att{\expandafter\hocr@removequotes#2}}
+{\csgdef{attrdrv@#1}{#2}}%
 }
 
-
+\gdef\hocr@removequotes"#1"{#1}
 \gdef\hocr@blbox#1 #2 #3\@empty{%
 %put top x and left y bbox dimensions of an element into macros
 \gdef\textposbbox{#1}
