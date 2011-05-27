@@ -1,0 +1,11 @@
+\RequirePackage[UTF8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{tgtermes}
+\RequirePackage{cmap,microtype}
+\newcount\ocrpage
+\ocrpage=1
+\DeclareClassActions{ocr_par}{}{\par}
+\DeclareClassActions{footnotes}{\footnotesize}{}
+\DeclareClassActions{ocr_page}{\hrule\marginpar{\the\ocrpage}}{\hrule\global\advance\ocrpage by 1}
+\DeclareClassActions{ocr_line}{}{\vrule}
+\DeclareClassActions{ocr_carea}{}{\vspace\baselineskip}
