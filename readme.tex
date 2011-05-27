@@ -1,0 +1,123 @@
+\documentclass[a4page,12pt,oneside]{ltxdoc}
+\usepackage{tgschola,amssymb,microtype}
+\usepackage[T1]{fontenc}
+
+
+\usepackage{geometry}
+
+\usepackage{url}
+
+\newcommand\href[2]{\textit{#2}\footnote{\url{#1}}}
+
+\author{Michal Hoftich}
+\title{hocrtex}
+\begin{document}
+\maketitle
+\tableofcontents
+\section{introduction}
+
+Hocr is html microformat for information from OCR packages. You can find
+more information about hocr in this
+\href{https://docs.google.com/View?docid=dfxcv4vc\_67g844kf}{document}.
+It can be generated with
+\href{http://code.google.com/p/tesseract-ocr/}{tesseract
+v3.0$\geq$}, \href{http://code.google.com/p/ocropus/}{ocropus}
+or \href{https://launchpad.net/cuneiform-linux}{cuneiform} programs.
+With hocrtex, it is possible to use this information from \LaTeX\ and
+convert this file to PDF.
+
+Hocrtex is based on xmltex, xml processor written in \TeX.
+
+\section{Install}
+
+Unzip contents of the file hocr.tar.gz to your local texmf dir. You can
+find its location with the following command:
+
+\begin{verbatim}
+kpsewhich -var-value TEXMFHOME
+\end{verbatim}
+\section{Usage}
+
+First, you need to get hocr file. You have to process images from your
+scanned book with one of OCR packages listed above.
+
+In tesseract, you can generate hocr output with this procedure:
+
+\begin{enumerate}
+\item  Create file named ``hocr'', put it somewhere and copy this line into  it:
+
+  \verb!tessedit_create_hocr 1!
+\item call tesseract
+
+  \verb!tesseract imagename outputname -l lang name +path/to/hocr/hocr'!
+\end{enumerate}
+Now we have html file with hocr information.
+For processing with hocrtex, we need to generate config file using
+package \verb!hocrconfig!.\\[\baselineskip]
+Create file sample.tex:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage[
+   FileName=normal    
+  ,ResizeRatio=5.5     
+  ,ImageName=normal- 
+  ,Driver=underimage   
+]{hocrconfig}
+\begin{document}
+\end{document}
+\end{verbatim}
+after compilation with \LaTeX, file \verb!normal.cfg! is created.\\[\baselineskip]
+There are these options: 
+
+\begin{description}
+\item[FileName]name of hocr file without .html suffix.  
+\item[ResizeRatio]division from bbox coordinates to points. Dimensions in bboxes depends on resolution of input image and this resolution may be different from resolution of the output PDF. Input dimensions are divided with this value to get correct dimensions.
+\item[ImageName]in hocr, each page includes name of its 
+ source image. but if source image is multipage tiff,      
+ this name is on all pages the same. it is best to 
+convert this tiff image into series of png images
+ named \texttt{normal-0.png, \ldots, normal-n.png}.
+ImageName is the prefix before image number 
+\item[Driver]defines actions on hocr classes 
+
+\item[DocClass]which \texttt{documentclass} will be used. Default is article, but book and memoir are other possibilities.
+
+\item[DocAttr]options for \texttt{documentclass}, default is \texttt{a4pahe,12pt}
+
+\end{description}
+With generated config file, you can call xmltex. It is called directly on your hocr file:
+
+\begin{verbatim}
+pdfxmltex normal.html    
+\end{verbatim}
+file normal.pdf will be created.
+
+\section{Drivers}
+
+Behaviour of hocrtex can be defined with driver files. They are normal \LaTeX\ packages with names in format \texttt{hocrdriver-drivername.sty}.
+
+There you can include another packages, define and redefine commands and so on. Their core purpose is to define actions, which are taken on html elements with hocr (or any other) classes. They are defined with command \textbackslash DeclareClassActions:
+\begin{verbatim}
+\DeclareClassActions{class_name}{actions on start tag}{actions on end tag}
+\end{verbatim} 
+
+There is an example of simple driver. It print rule between pages, small vertical rule after each line of source document, vertical space between page areas. Class footnotes is not defined by \texttt{hocr}, but by the user, its purpose is to print footnotes in right text size.
+\begin{verbatim}
+
+\RequirePackage[UTF8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{tgtermes}
+\RequirePackage{cmap,microtype}
+\newcount\ocrpage
+\ocrpage=1
+\DeclareClassActions{ocr_par}{}{\par}
+\DeclareClassActions{footnotes}{\footnotesize}{}
+\DeclareClassActions{ocr_page}
+    {\hrule\marginpar{\the\ocrpage}}
+    {\hrule\global\advance\ocrpage by 1}
+\DeclareClassActions{ocr_line}{}{\vrule}
+\DeclareClassActions{ocr_carea}{}{\vspace\baselineskip}
+\end{verbatim}
+
+\end{document}
